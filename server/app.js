@@ -5,8 +5,6 @@ const path = require("path");
 const authRoutes = require('./routes/authRoutes.js');
 const resumeRoutes = require("./routes/resumeRoutes.js")
 const paymentRoute = require('./routes/payment.js');
-const { authenticateJWT } = require('./middleware/auth.js');
-const { getSharedResume } = require('./controllers/resumeController.js');
 
 
 const app = express();
@@ -26,9 +24,8 @@ app.get('/', (req, res) => {
 // Serve uploaded files publicly (for shared CVs)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRoutes);
-app.get('/api/resume/shared/:shareToken', getSharedResume);
-app.use('/api/resume', authenticateJWT, resumeRoutes);
-app.use('/api/payment', authenticateJWT, paymentRoute);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/payment', paymentRoute);
 
 
 //  404 handler
